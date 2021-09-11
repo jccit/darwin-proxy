@@ -1,7 +1,6 @@
 package darwin
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"net/http"
 	"strings"
@@ -34,13 +33,12 @@ func getServiceRequestXML(filter string) string {
 	return strings.Replace(combined, "\n", "", -1)
 }
 
-func GetServiceDetails(id string, r *http.Request) []byte {
+func GetServiceDetails(id string, r *http.Request) ServiceDetailResponse {
 	soapReq := getServiceRequestXML(ServiceSelector(id))
 	response := soap.SendDarwinRequest(soapReq, r)
 
 	var parsedResponse ServiceDetailResponse
 	xml.Unmarshal(response, &parsedResponse)
-	converted, _ := json.Marshal(parsedResponse)
 
-	return converted
+	return parsedResponse
 }

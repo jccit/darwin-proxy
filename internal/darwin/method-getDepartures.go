@@ -1,7 +1,6 @@
 package darwin
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"net/http"
 	"strings"
@@ -30,13 +29,12 @@ func getDeparturesRequestXML(filter string) string {
 	return strings.Replace(combined, "\n", "", -1)
 }
 
-func GetDepartures(crs string, r *http.Request) []byte {
+func GetDepartures(crs string, r *http.Request) DepartureBoardResponse {
 	soapReq := getDeparturesRequestXML(CRSSelector(crs))
 	response := soap.SendDarwinRequest(soapReq, r)
 
 	var parsedResponse DepartureBoardResponse
 	xml.Unmarshal(response, &parsedResponse)
-	converted, _ := json.Marshal(parsedResponse)
 
-	return converted
+	return parsedResponse
 }
