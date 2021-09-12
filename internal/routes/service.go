@@ -9,7 +9,7 @@ import (
 )
 
 func Service(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	id := ps.ByName("id")
-	response := darwin.GetServiceDetails(id, r)
+	id := darwin.ServiceID(ps.ByName("id"))
+	response := darwin.GetServiceDetails(id.URLDecode(), r)
 	returnJSON(w, response)
 }
