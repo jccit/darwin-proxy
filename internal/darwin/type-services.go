@@ -3,17 +3,17 @@ package darwin
 import "strings"
 
 type BoardService struct {
-	ScheduledDeparture string    `xml:"std"`
-	EstimatedDeparture string    `xml:"etd"`
-	ScheduledArrival   string    `xml:"sta"`
-	EstimatedArrival   string    `xml:"eta"`
-	Platform           string    `xml:"platform"`
-	Operator           string    `xml:"operator"`
-	OperatorCode       string    `xml:"operatorCode"`
-	ServiceType        string    `xml:"serviceType"`
-	ServiceID          ServiceID `xml:"serviceID"`
-	Origin             Location  `xml:"origin>location"`
-	Destination        Location  `xml:"destination>location"`
+	ScheduledDeparture string    `xml:"std" json:"scheduledDeparture"`
+	EstimatedDeparture string    `xml:"etd" json:"estimatedDeparture"`
+	ScheduledArrival   string    `xml:"sta" json:"scheduledArrival"`
+	EstimatedArrival   string    `xml:"eta" json:"estimatedArrival"`
+	Platform           string    `xml:"platform" json:"platform"`
+	Operator           string    `xml:"operator" json:"operator"`
+	OperatorCode       string    `xml:"operatorCode" json:"operatorCode"`
+	ServiceType        string    `xml:"serviceType" json:"serviceType"`
+	ServiceID          ServiceID `xml:"serviceID" json:"serviceID"`
+	Origin             Location  `xml:"origin>location" json:"origin"`
+	Destination        Location  `xml:"destination>location" json:"destination"`
 }
 
 type ServiceID string

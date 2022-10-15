@@ -1,0 +1,41 @@
+syntax = "proto3";
+package darwin;
+
+option go_package = "./pb";
+
+message Location {
+    string crs = 1;
+    string name = 2;
+}
+
+message CallingPoint {
+    string crs = 1;
+    string name = 2;
+    string scheduledTime = 3;
+    string estimatedTime = 4;
+    string actualTime = 5;
+}
+
+message BoardService {
+    string scheduledDeparture = 1;
+    string estimatedDeparture = 2;
+    string scheduledArrival = 3;
+    string estimatedArrival = 4;
+    string platform = 5;
+    string operator = 6;
+    string operatorCode = 7;
+    string serviceType = 8;
+    string serviceID = 9;
+
+    Location origin = 10;
+    Location destination = 11;
+}
+
+message DepartureBoard {
+    string generatedAt = 1;
+    string location = 2;
+    string crs = 3;
+    bool platformAvailable = 4;
+
+    repeated BoardService services = 5;
+}

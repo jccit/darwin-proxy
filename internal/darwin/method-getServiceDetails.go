@@ -1,6 +1,7 @@
 package darwin
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"net/http"
 	"strings"
@@ -41,4 +42,25 @@ func GetServiceDetails(id string, r *http.Request) ServiceDetailResponse {
 	xml.Unmarshal(response, &parsedResponse)
 
 	return parsedResponse
+}
+
+func GetServiceDetailsAsJSON(id string, r *http.Request) []byte {
+	response := GetServiceDetails(id, r)
+	json, _ := json.Marshal(response)
+	return json
+}
+
+func GetServiceDetailsAsProto(id string, r *http.Request) []byte {
+	/*
+		response := GetServiceDetails(id, r)
+		jsonOut, _ := json.Marshal(response)
+
+		var protoOut pb.ServiceDetail
+		proto.Unmarshal(jsonOut, &protoOut)
+		encodedProto, _ := proto.Marshal(&protoOut)
+
+		return encodedProto
+	*/
+
+	return nil
 }

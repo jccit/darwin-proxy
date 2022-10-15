@@ -11,6 +11,13 @@ import (
 
 func Departures(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	crs := ps.ByName("crs")
-	response := darwin.GetDepartures(strings.ToUpper(crs), r)
-	returnJSON(w, response)
+	format := r.URL.Query().Get("format")
+
+	if format == "proto" {
+		response := darwin.GetDeparturesAsProto(strings.ToUpper(crs), r)
+		returnProto(w, response)
+	} else {
+		response := darwin.GetDeparturesAsJSON(strings.ToUpper(crs), r)
+		returnJSON(w, response)
+	}
 }

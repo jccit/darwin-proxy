@@ -1,11 +1,14 @@
 package darwin
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"net/http"
 	"strings"
 
 	"github.com/jccit/darwin-proxy/internal/soap"
+	"github.com/jccit/darwin-proxy/pb"
+	"google.golang.org/protobuf/proto"
 )
 
 const departuresXML = `<ldb:GetDepartureBoardRequest>||FILTER||</ldb:GetDepartureBoardRequest>`
@@ -15,11 +18,11 @@ type DepartureBoardResponse struct {
 }
 
 type DepartureBoard struct {
-	GeneratedAt       string         `xml:"generatedAt"`
-	Location          string         `xml:"locationName"`
-	CRS               string         `xml:"crs"`
-	PlatformAvailable bool           `xml:"platformAvailable"`
-	Services          []BoardService `xml:"trainServices>service"`
+	GeneratedAt       string         `xml:"generatedAt" json:"generatedAt"`
+	Location          string         `xml:"locationName" json:"location"`
+	CRS               string         `xml:"crs" json:"crs"`
+	PlatformAvailable bool           `xml:"platformAvailable" json:"platformAvailable"`
+	Services          []BoardService `xml:"trainServices>service" json:"services"`
 }
 
 func getDeparturesRequestXML(filter string) string {
@@ -37,4 +40,21 @@ func GetDepartures(crs string, r *http.Request) DepartureBoardResponse {
 	xml.Unmarshal(response, &parsedResponse)
 
 	return parsedResponse
+}
+
+func GetDeparturesAsJSON(crs string, r *http.Request) []byte {
+	response := GetDepartures(crs, r)
+	json, _ := json.Marshal(response)
+	return json
+}
+
+func GetDeparturesAsProto(crs string, r *http.Request) []byte {
+	response := GetDepartures(crs, r)
+	jsonOut, _ := json.Marshal(response.Board)
+
+	var protoOut pb.DepartureBoard
+	json.Unmarshal(jsonOut, &protoOut)
+	encodedProto, _ := proto.Marshal(&protoOut)
+
+	return encodedProto
 }
